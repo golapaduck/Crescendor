@@ -85,6 +85,60 @@ app.post('/login', (req, res) => {
   })
 })
 
+// =====================================     Log      =====================================
+
+app.get('/log', (req, res) => {
+  pool.query('SELECT * FROM Crescendor.log;', (error, rows) => {
+    if (error){
+      res.status(400).send('ERROR: Data')
+      return
+    }
+    console.log('Log info is: ', rows)
+    res.status(200).send(rows)
+  })
+  
+})
+
+// getlog API
+app.get('/log/getlog/:user_id', (req, res) => {
+  const user_id = req.params.user_id
+
+  pool.query(`SELECT score from Crescendor.log where user_id = "${user_id}";`, (error, rows) => {
+    if (error){
+      res.status(400).send('ERROR: Data')
+      return
+    }
+    console.log('getscore \n user: %s \n music: %d \n', user_id, music_name)
+    console.log(rows)
+    res.status(200).send(rows)
+  })
+})
+
+// addlog API
+app.post('/log/addlog/:user_id', (req, res) => {
+  const user_id = req.params.user_id
+
+  console.log(midi)
+
+  let today = new Date() 
+  const date = new String(
+    today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate() + " " + today.getHours()  + ':' + today.getMinutes() + ':' + today.getSeconds()
+    ).valueOf()
+
+  pool.query(`INSERT INTO Crescendor.log SET id = "${user_id}", date = "${date}";`, (error, rows) => {
+    if (error){
+      console.log(error)
+      res.status(400).send('ERROR: Exist log')
+      return
+    }
+    // console.log('addscore \n user: %s \n music: %d \n', user_id, music_name)
+    res.status(200).send("SUCCESS")
+  })
+
+  
+})
+
+
 // =====================================    Record    =====================================
 app.get('/record', (req, res) => {
   pool.query('SELECT * from Crescendor.record;', (error, rows) => {
