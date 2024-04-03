@@ -103,7 +103,7 @@ app.get('/log', (req, res) => {
 app.get('/log/getlog/:user_id', (req, res) => {
   const user_id = req.params.user_id
 
-  pool.query(`SELECT * from Crescendor.log where user_id = "${user_id}";`, (error, rows) => {
+  pool.query(`SELECT * from Crescendor.log where id = "${user_id}";`, (error, rows) => {
     if (error){
       res.status(400).send('ERROR: Data')
       return
