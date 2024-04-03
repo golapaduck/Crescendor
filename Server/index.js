@@ -103,7 +103,7 @@ app.get('/log', (req, res) => {
 app.get('/log/getlog/:user_id', (req, res) => {
   const user_id = req.params.user_id
 
-  pool.query(`SELECT score from Crescendor.log where user_id = "${user_id}";`, (error, rows) => {
+  pool.query(`SELECT * from Crescendor.log where user_id = "${user_id}";`, (error, rows) => {
     if (error){
       res.status(400).send('ERROR: Data')
       return
@@ -117,8 +117,6 @@ app.get('/log/getlog/:user_id', (req, res) => {
 // addlog API
 app.post('/log/addlog/:user_id', (req, res) => {
   const user_id = req.params.user_id
-
-  console.log(midi)
 
   let today = new Date() 
   const date = new String(
