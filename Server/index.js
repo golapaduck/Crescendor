@@ -60,13 +60,13 @@ app.post('/signout', (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, 10)
 
     pool.getConnection((err, connection)=>{
-      connection.query(`Delete From Crescendor.users where (id = "${id}" and password = "${hashedPassword}");`, (error, rows) => {
+      connection.query(`Delete From Crescendor.users where (id = "${id}" and password = "${hashedPassword}");`, (error, results,rows) => {
         if (error){
           console.log(error)
           res.status(400).send('ERROR: id')
           return
         }
-        if (rows == null){
+        if (results.affectedRows == 0){
           res.status(400).send('ERROR: password')
           return
         }
