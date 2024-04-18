@@ -35,6 +35,8 @@ app.get('/users', (req, res) => {
   
 })
 
+// 
+
 // signup API (회원가입)
 // 실패하면 ERROR, 성공하면 SUCCESS 리턴
 app.post('/signup', (req, res) => {
@@ -46,6 +48,26 @@ app.post('/signup', (req, res) => {
         if (error){
           console.log(error)
           res.status(400).send('ERROR: id')
+          return
+        }
+        res.status(200).send('SUCCESS')
+      })
+    })
+})
+
+app.post('/signout', (req, res) => {
+  const { id, password } = req.body;
+  const hashedPassword = bcrypt.hashSync(password, 10)
+
+    pool.getConnection((err, connection)=>{
+      connection.query(`Delete From Crescendor.users where (id = "${id}" and password = "${hashedPassword}");`, (error, rows) => {
+        if (error){
+          console.log(error)
+          res.status(400).send('ERROR: id')
+          return
+        }
+        if (rows == null){
+          res.status(400).send('ERROR: password')
           return
         }
         res.status(200).send('SUCCESS')
@@ -84,6 +106,7 @@ app.post('/login', (req, res) => {
     }
   })
 })
+
 
 // =====================================     Log      =====================================
 
