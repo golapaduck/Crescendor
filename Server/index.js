@@ -36,6 +36,18 @@ app.get('/users', (req, res) => {
 })
 
 // 
+app.get('/getuser', (req, res) => {
+  const { id } = req.body;
+  pool.query(`SELECT * FROM Crescendor.users where id="${id}"`, (error, rows) => {
+    if (error){
+      res.status(400).send('ERROR: Data')
+      return
+    }
+    console.log('User info is: ', rows)
+    res.status(200).send(rows)
+  })
+  
+})
 
 // signup API (회원가입)
 // 실패하면 ERROR, 성공하면 SUCCESS 리턴
@@ -60,6 +72,22 @@ app.post('/signout', (req, res) => {
 
     pool.getConnection((err, connection)=>{
       connection.query(`Delete From Crescendor.users where id = "${id}";`, (error, rows) => {
+        if (error){
+          console.log(error)
+          res.status(400).send('ERROR: id')
+          return
+        }
+        res.status(200).send('SUCCESS')
+      })
+    })
+})
+
+//프로필 사진 변경
+app.post('/changeprofile', (req, res) => {
+  const { id, password, profile } = req.body;
+
+    pool.getConnection((err, connection)=>{
+      connection.query(`UPDATE Crescendor.record SET profile="${profile}" where id = "${id}";`, (error, rows) => {
         if (error){
           console.log(error)
           res.status(400).send('ERROR: id')
@@ -225,8 +253,6 @@ app.put('/record/setscore/:user_id/:music_name', (req, res) => {
       res.status(400).send('ERROR: Data')
       return
     }
-    // console.log('setscore \n user: %s \n music: %d \n', user_id, music_name)
-    // console.log(rows)
     res.status(200).send("SUCCESS")
   })
 
