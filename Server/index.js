@@ -84,10 +84,10 @@ app.post('/signout', (req, res) => {
 
 //프로필 사진 변경
 app.post('/changeprofile', (req, res) => {
-  const { id, password, profile } = req.body;
+  const { id, profile } = req.body;
 
     pool.getConnection((err, connection)=>{
-      connection.query(`UPDATE Crescendor.record SET profile="${profile}" where id = "${id}";`, (error, rows) => {
+      connection.query(`UPDATE Crescendor.users SET profile="${profile}" where id = "${id}";`, (error, rows) => {
         if (error){
           console.log(error)
           res.status(400).send('ERROR: id')
