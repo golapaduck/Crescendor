@@ -36,8 +36,8 @@ app.get('/users', (req, res) => {
 })
 
 // 
-app.get('/getuser', (req, res) => {
-  const { id } = req.body;
+app.get('/getuser/:id', (req, res) => {
+  const id = req.params.id
   pool.query(`SELECT * FROM Crescendor.users where id="${id}"`, (error, rows) => {
     if (error){
       res.status(400).send('ERROR: Data')
