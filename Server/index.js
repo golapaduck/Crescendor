@@ -98,6 +98,22 @@ app.post('/changeprofile', (req, res) => {
     })
 })
 
+//진행도 변경
+app.post('/setcurriculum', (req, res) => {
+  const { id, curriculum } = req.body;
+
+    pool.getConnection((err, connection)=>{
+      connection.query(`UPDATE Crescendor.users SET curriculum="${curriculum}" where id = "${id}";`, (error, rows) => {
+        if (error){
+          console.log(error)
+          res.status(400).send('ERROR: id')
+          return
+        }
+        res.status(200).send('SUCCESS')
+      })
+    })
+})
+
 // login API (로그인)
 // 실패하면 ERROR, 성공하면 SUCCESS 리턴
 app.post('/login', (req, res) => {
